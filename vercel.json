@@ -1,8 +1,0 @@
-{
-  "crons": [
-    {
-      "path": "/api/drive/renew-watch",
-      "schedule": "0 3 * * *"
-    }
-  ]
-}
