@@ -7,7 +7,7 @@ How to reorganize ruet-cse-archive by feature, and the order to do it in.
 1. **Code for one feature is spread over 5 folders.** The code library alone lives in `app/codelibrary/components/`, `lib/codelibrary/`, `utils/CodelibraryDB.ts`, `helpers/CodeSnippetHelper.js` and `types/comment.ts`. Nothing tells you where new code should go.
 2. **The folder names overlap.** `lib/`, `lib/helper/`, `utils/`, `helpers/` and `db/` all mean "shared code". `db/students_info.js` is static data, while `utils/*DB` is database setup.
 3. **`app/components/` mixes shared and single-use components.** Chat (`user/P2PChat.jsx`), the homepage and the alumni map sit beside truly shared UI (`ui/`).
-4. **Two auth modules exist side by side.** `lib/auth-utils.js` (3 imports) and `lib/auth-utils-secure.js` (16 imports).
+4. **Two auth modules exist side by side.** `lib/auth-utils.js` (3 imports) and `lib/auth-utils-secure.js` (24 imports).
 5. **Some files are too big.** `P2PChat.jsx` is 2,517 lines and `GroupChat.jsx` 2,492, and they likely repeat a lot of each other. `CommentSection.tsx` (844 lines) and `PollComponent.jsx` (867 lines) are also large.
 6. **There is code to delete.** `app/components/home/slideshow.jsx` is never imported. `lib/firebase-url-obfuscator.js` and `lib/firebase-storage-cleaner.js` protect nothing, because Firebase web config is public by design.
 7. **JavaScript and TypeScript are mixed with no rule.** The newer Drive and code library code is `.ts`, the older code is `.jsx`.
@@ -35,7 +35,7 @@ app/                         # routes only: page.tsx, layout.tsx, route.ts. Thin
   (user)/user/...            # login, dashboard, notifications, create-snippet
   admin/...                  # protected by middleware.ts
   codelibrary/...
-  api/...                    # drive/*, statistics, plus new auth/login and admin/*
+  api/...                    # statistics, plus new auth/login and admin/*
 
 features/                    # one folder per product area, owns everything it needs
   auth/          components/ hooks/ server.ts service.ts
@@ -45,7 +45,7 @@ features/                    # one folder per product area, owns everything it n
   presence/      PresenceTracker.ts components/
   notifications/ components/ hooks/ sound.ts title.ts
   polls/         components/ db.ts
-  drive/         auth.ts cache.ts changes.ts config.ts data.ts components/
+  drive/         components/ (the API, cache and webhook live in ../cse-archive-server/; see drive-cache-system.md)
   alumni/        data.ts components/ (LeafletMap)
   developers/    utils.ts components/
   home/          components/ (hero, features, faq, footer, apk-download)
@@ -73,7 +73,7 @@ middleware.ts                # route guard for admin and user pages, via a sessi
 Each step can ship on its own.
 
 1. **Fix the security issues.** Move login to Firebase Auth (email/password) or a server route, and make the Firestore rules deny clients access to `pincode`. Check admin roles on the server in `middleware.ts`, not against a list in the page.
-2. **Delete dead code.** Remove `slideshow.jsx`, the obfuscator and storage cleaner, and whichever of the two `auth-utils` files you are dropping.
+2. **Delete dead code.** Remove `slideshow.jsx`, `lib/helper/ultimate.js` (nothing imports it), the obfuscator and storage cleaner, and whichever of the two `auth-utils` files you are dropping.
 3. **Merge the shared-code folders.** `utils/`, `helpers/`, `lib/helper/` and `db/` go into `lib/` and `data/`. This is mostly moving files and updating imports.
 4. **Move one feature into `features/`.** Start with the code library, since its code is already mostly together, and use it as the pattern for the rest.
 5. **Split up chat.** Pull the parts P2P and group chat share into `features/chat/components/`. This should remove most of the ~5,000 lines.
@@ -82,6 +82,5 @@ Each step can ship on its own.
 
 ## Not yet checked
 
-- Whether `lib/helper/ultimate.js` is still used. `app/layout.jsx` and `app/page.jsx` match the name, but that may be just the word, not an import. Check before deleting it.
 - The current Firestore security rules.
 - Firebase usage and billing numbers, which would show whether the extra free-tier limits from separate projects are needed at all.

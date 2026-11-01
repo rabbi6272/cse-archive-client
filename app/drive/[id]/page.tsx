@@ -36,7 +36,7 @@ interface DriveFolderData {
 }
 
 async function fetchDriveFiles(folderId: string): Promise<DriveFolderData> {
-  const response = await fetch(`/api/drive`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_DRIVE_API_URL}/api/drive`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ folderId }),

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 const TOKEN_KEY = "driveAdminSecret";
+const ADMIN_URL = `${process.env.NEXT_PUBLIC_DRIVE_API_URL}/api/drive/admin`;
 
 type AdminAction = "setup" | "revalidate" | "delete" | "renew" | "status";
 
@@ -51,7 +52,7 @@ export default function DriveAdminPage() {
 
   const api = useCallback(
     async <T = AdminResponse>(method: string, body?: Record<string, unknown>) => {
-      const res = await fetch("/api/drive/admin", {
+      const res = await fetch(ADMIN_URL, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +73,7 @@ export default function DriveAdminPage() {
     setLoading(true);
     setTokenInput("");
     try {
-      const res = await fetch("/api/drive/admin", {
+      const res = await fetch(ADMIN_URL, {
         method: "GET",
         headers: { Authorization: `Bearer ${secret}` },
       });
@@ -232,7 +233,7 @@ export default function DriveAdminPage() {
 
           <div className="mt-6 text-xs text-gray-500 dark:text-gray-400 text-center">
             <p>
-              The secret is sent to /api/drive/admin as a Bearer token and kept
+              The secret is sent to the Drive API server as a Bearer token and kept
               in sessionStorage for this tab only.
             </p>
           </div>
