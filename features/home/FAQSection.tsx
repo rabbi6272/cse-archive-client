@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
 import { cn, focusRing } from "@/components/ui";
+import { FaqItem } from "./FaqItem";
 import { SectionHeading } from "./SectionHeading";
 
 function InlineLink({ href, children }: { href: string; children: ReactNode }) {
@@ -55,7 +55,7 @@ const faqs: { question: string; answer: ReactNode }[] = [
   },
 ];
 
-// Native <details> accordion: keyboard and screen-reader support without JS.
+// Server component; each question is a small FaqItem client island for the animated open/close.
 export function FAQSection() {
   return (
     <section aria-labelledby="faq-heading" className="page-container py-16 md:py-24">
@@ -63,21 +63,9 @@ export function FAQSection() {
 
       <div className="mx-auto max-w-3xl border-t border-hairline">
         {faqs.map((faq) => (
-          <details key={faq.question} className="group border-b border-hairline">
-            <summary
-              className={cn(
-                "flex cursor-pointer list-none items-center justify-between gap-4 rounded-button py-5 text-lg font-semibold text-ink [&::-webkit-details-marker]:hidden",
-                focusRing,
-              )}
-            >
-              {faq.question}
-              <ChevronDown
-                className="size-5 shrink-0 text-steel transition-transform group-open:rotate-180 motion-reduce:transition-none"
-                aria-hidden
-              />
-            </summary>
-            <p className="pb-6 leading-relaxed text-ink-soft">{faq.answer}</p>
-          </details>
+          <FaqItem key={faq.question} question={faq.question}>
+            {faq.answer}
+          </FaqItem>
         ))}
       </div>
     </section>

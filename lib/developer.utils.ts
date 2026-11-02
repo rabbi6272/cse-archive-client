@@ -1,4 +1,4 @@
-import type { Developer } from "@/features/developers/data";
+import type { Developer } from "@/app/contact&help/developers/page";
 
 /**
  * Group developers by role category

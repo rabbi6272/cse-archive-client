@@ -11,14 +11,15 @@ const stats = [
   { value: "150+", label: "alumni network" },
 ];
 
-// Navy band with the headline; the campus photo overlaps its bottom edge (DESIGN.md hero-band-dark).
+// Tinted band with the headline (surface token: light grey / lighter navy, follows the theme);
+// the campus photo overlaps its bottom edge.
 export function HeroSection() {
   return (
     <section aria-labelledby="hero-heading">
-      <div className="bg-brand-navy pt-20 pb-40 text-white sm:pt-28 md:pb-56">
+      <div className="bg-surface pt-20 pb-40 text-ink sm:pt-28 md:pb-56">
         <div className="page-container flex flex-col items-center text-center">
           <p
-            className="reveal text-[11px] font-semibold tracking-[0.2em] text-on-navy-accent uppercase sm:text-sm"
+            className="reveal text-[11px] font-semibold tracking-[0.2em] text-link uppercase sm:text-sm"
             style={revealDelay(0)}
           >
             RUET · Department of Computer Science &amp; Engineering
@@ -33,7 +34,7 @@ export function HeroSection() {
           </h1>
 
           <p
-            className="reveal mt-6 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg"
+            className="reveal mt-6 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg"
             style={revealDelay(250)}
           >
             A growing archive of study notes, code libraries and alumni guidance, maintained by RUET
@@ -48,7 +49,7 @@ export function HeroSection() {
               Browse study resources
               <ArrowRight className="size-4" aria-hidden />
             </Link>
-            <Link href="/codelibrary" className={buttonClasses("on-dark")}>
+            <Link href="/codelibrary" className={`${buttonClasses("secondary")} bg-canvas`}>
               Open the code library
             </Link>
           </div>
@@ -60,7 +61,7 @@ export function HeroSection() {
                 className="reveal flex flex-col-reverse items-center gap-1"
                 style={revealDelay(400 + i * 100)}
               >
-                <dt className="text-xs text-white/70 sm:text-sm">{stat.label}</dt>
+                <dt className="text-xs text-steel sm:text-sm">{stat.label}</dt>
                 <dd className="text-3xl leading-none font-semibold md:text-4xl">{stat.value}</dd>
               </div>
             ))}
