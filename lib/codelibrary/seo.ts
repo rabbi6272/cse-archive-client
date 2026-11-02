@@ -1,46 +1,11 @@
-import { collection, getDocs } from "firebase/firestore";
-import type { DocumentData, QuerySnapshot } from "firebase/firestore";
-import { CodelibraryDB, COLLECTION } from "@/utils/CodelibraryDB";
-import {
-  decorateSnippet,
-  normalizeSnippets,
-} from "@/lib/codelibrary/snippetIdentity";
+import { getSnippets } from "@/features/codelibrary/server";
 import type { DecodedSnippet } from "@/lib/codelibrary/snippetIdentity";
 
-function flattenSnippetDocuments(
-  snapshots: QuerySnapshot<DocumentData>,
-): DecodedSnippet[] {
-  const snippets: DecodedSnippet[] = [];
-
-  for (const snippetDoc of snapshots.docs) {
-    const data = snippetDoc.data();
-
-    if (Array.isArray(data.snippets)) {
-      for (const snippet of normalizeSnippets(data.snippets, snippetDoc.id)) {
-        snippets.push(snippet);
-      }
-      continue;
-    }
-
-    snippets.push(
-      decorateSnippet(
-        { ...data, id: data.id || snippetDoc.id },
-        snippetDoc.id,
-      ),
-    );
-  }
-
-  return snippets;
-}
-
+// Uses the server read in features/codelibrary/server.ts, which signs in first. The old version
+// read Firestore unauthenticated, which the rules deny, so the sitemap and RSS feed came out empty.
 async function fetchAllCodeSnippetsServer(): Promise<DecodedSnippet[]> {
   try {
-    const snippetsRef = collection(CodelibraryDB, COLLECTION);
-    const snapshots = await getDocs(snippetsRef);
-    return flattenSnippetDocuments(snapshots).sort(
-      (left, right) =>
-        new Date(right.date || 0).getTime() - new Date(left.date || 0).getTime(),
-    );
+    return await getSnippets();
   } catch (error) {
     console.error("Error fetching code snippets:", error);
     return [];

@@ -62,6 +62,10 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
+      // Old per-tool admin pages, now tabs of the single /admin page.
+      { source: "/admin/drive", destination: "/admin?tab=drive", permanent: true },
+      { source: "/admin/add/alumni", destination: "/admin?tab=alumni", permanent: true },
+      { source: "/admin/users/satealltime", destination: "/admin?tab=sessions", permanent: true },
     ];
   },
 

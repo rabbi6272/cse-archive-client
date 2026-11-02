@@ -1,5 +1,6 @@
-import { avegance } from "@/app/fonts";
 import { StaticImageData } from "next/image";
+
+import { avengeance } from "@/app/fonts";
 
 import { groupDevelopersByRole } from "@/lib/developer.utils";
 import { ProfileCard } from "@/app/contact&help/developers/ProfileCard";
@@ -187,7 +188,7 @@ export default function Developers() {
     <div className="p-4 md:p-8 min-h-dvh">
       {/* <div className="p-3 md:p-6 w-full bg-[#ffffffa4] dark:bg-slate-700 rounded-lg"> */}
       <h3
-        className={`${avegance.className} pt-1 tracking-wide text-center text-4xl lg:text-6xl font-normal text-gray-800 dark:text-gray-200`}
+        className={`${avengeance.className} pt-1 tracking-wide text-center text-4xl lg:text-6xl font-normal text-gray-800 dark:text-gray-200`}
       >
         The Avengers
       </h3>
