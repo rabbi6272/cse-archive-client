@@ -1,4 +1,32 @@
-export const alumniData = [
+export type Alumnus = {
+  name: string;
+  Id?: string;
+  firebaseId?: string;
+  dept: string;
+  series: string;
+  optional?: string; // job title or details
+  address: string;
+  country: string;
+  badges?: string; // comma-separated keys, see badgeLabels
+  linkedinurl?: string;
+  type?: string;
+  coordinates: [lng: number, lat: number];
+  isDynamic?: boolean;
+  dateAdded?: string;
+};
+
+export const badgeLabels: Record<string, string> = {
+  teacher: "Teacher",
+  highereducated: "Higher studies",
+  researcher: "Researcher",
+  corporate: "Corporate",
+  teamleader: "Team lead",
+  manager: "Manager",
+  entrepreneur: "Entrepreneur",
+  recruiter: "Recruiter",
+};
+
+export const alumniData: Alumnus[] = [
   {
     name: "Sarowar Sattar",
     Id: "0x1b",

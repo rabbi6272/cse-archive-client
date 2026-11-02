@@ -5,14 +5,13 @@ import image2 from "@/public/images/resources/image2.jpg";
 import image3 from "@/public/images/resources/image3.jpg";
 import image4 from "@/public/images/resources/image4.jpg";
 
-// A link without href is shown as "coming soon".
-export type ResourceLink = { label: string; href?: string };
+import type { CoverLink } from "@/components/cards/CoverCard";
 
 export type Resource = {
   title: string;
   description: string;
   image: StaticImageData;
-  links: ResourceLink[];
+  links: CoverLink[];
 };
 
 export const resources: Resource[] = [

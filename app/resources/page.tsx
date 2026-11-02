@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ResourceCard } from "@/features/resources/ResourceCard";
+import { CoverCard } from "@/components/cards/CoverCard";
 import { resources } from "@/features/resources/data";
 
 const title = "Academic Resources";
@@ -28,8 +28,8 @@ export default function ResourcesPage() {
 
       <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {resources.map((resource, i) => (
-          <li key={resource.title}>
-            <ResourceCard resource={resource} priority={i < 3} />
+          <li key={resource.title} className="reveal">
+            <CoverCard {...resource} priority={i < 3} />
           </li>
         ))}
       </ul>
