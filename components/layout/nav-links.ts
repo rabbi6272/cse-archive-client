@@ -24,6 +24,6 @@ export const navEntries: NavEntry[] = [
   },
   {
     label: "Apps",
-    items: [{ label: "RUET CSE 24", href: "https://students.ruetcsearchive.app/", external: true }],
+    items: [{ label: "RUET CSE 24", href: "https://ruetcse24-new.vercel.app/", external: true }],
   },
 ];

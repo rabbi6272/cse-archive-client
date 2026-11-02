@@ -107,7 +107,11 @@ Swap each page to the shared components and tokens, and replace Font Awesome ico
    - **Dashboard** (`features/dashboard/Dashboard.tsx`): profile, Nutrinos with an animated history, snippets via the shared `CodeBlock`, inline edit, and a confirm `Modal` for delete. **Bug fixed:** delete called `helper.update()` with a function, which always failed with "Snippet not found" but still deducted 3 Nutrinos. It now calls `helper.remove()`, and points change only on success.
    - Not restyled yet: `NotificationCenter.jsx` and `ActiveUsersIndicator.jsx` (both open chat, which waits for the chat split). `ChatModals.jsx` has no importers.
 6. **Chat:** only after step 5 of the restructure plan splits `P2PChat.jsx` and `GroupChat.jsx` (~5,000 lines). Restyling them before that means doing the work twice.
-7. **Admin pages:** last, since only admins see them.
+7. **Admin pages:** last, since only admins see them. **Done (2026-11-02):**
+   - **Update (2026-11-02):** merged into a single `/admin` page with tabs (Drive cache, Alumni, Sessions) and server-side `ADMIN_SECRET` auth. Old URLs redirect to the matching tab (`next.config.mjs`). Panels are server components; only the login form, Drive buttons and alumni form are client islands calling Server Actions. Sessions are a server snapshot (reload for the latest) instead of a live listener.
+   - **Deleted** (user's call): `maintain`, `add/reviewer` and `add/dev`. They wrote `resources`, `reviewers` and `developers` in Realtime DB, which no page reads any more.
+   - **Restyled:** `drive`, `add/alumni` and `users/satealltime`, all TypeScript, on a shared `features/admin/AdminShell.tsx`. Delete-cache uses a confirm `Modal`. Alumni validation is unchanged and shows inline. Sessions sort correctly whether timestamps are ms or `{ seconds }`, and a failed read no longer loads forever.
+   - **Still insecure (restructure step 1):** `add/alumni` and `users/satealltime` check a hard-coded password that ships in the public JS. `drive` is the only admin page that's really protected (the Drive server checks `ADMIN_SECRET`). Added a `danger` `Button` variant.
 
 Rule while moving pages: no new raw palette classes (`bg-gray-100`, `text-blue-600`) or hex values. Only tokens.
 
