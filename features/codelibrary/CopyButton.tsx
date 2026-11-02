@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { MorphIcon } from "morphicons/react";
+import { Check, Copy } from "lucide";
 import { cn, focusRing } from "@/components/ui";
 import { incrementCopies } from "./mutations";
 
@@ -40,11 +41,7 @@ export function CopyButton({
         className,
       )}
     >
-      {copied ? (
-        <Check className="size-3.5 motion-safe:animate-pop-in" aria-hidden />
-      ) : (
-        <Copy className="size-3.5" aria-hidden />
-      )}
+      <MorphIcon icon={copied ? Check : Copy} size={14} reducedMotion="user" />
       <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
     </button>
   );
