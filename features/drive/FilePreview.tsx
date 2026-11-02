@@ -66,7 +66,8 @@ export function FilePreview({ files }: { files: Pick<DriveFile, "id" | "name" | 
         close();
       }}
       onClick={(e) => e.target === e.currentTarget && close()}
-      className="m-auto h-[92dvh] max-h-none w-[min(72rem,calc(100%-1rem))] max-w-none overflow-hidden rounded-card border border-hairline bg-canvas p-0 text-ink shadow-modal backdrop:bg-black/60 motion-safe:animate-dialog-in"
+      // Full screen: easier to read documents than a centred box.
+      className="m-0 h-dvh max-h-none w-dvw max-w-none overflow-hidden bg-canvas p-0 text-ink backdrop:bg-black/60 motion-safe:animate-dialog-in"
     >
       {file && (
         <div className="flex h-full flex-col">

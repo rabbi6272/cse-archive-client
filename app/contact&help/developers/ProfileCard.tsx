@@ -63,7 +63,8 @@ export const ProfileCard = memo(({ name = "Fazle Rabbi", image = rabbi, location
               className="py-2 px-2 lg:px-4 flex items-center justify-center gap-2 rounded-full text-sm font-medium transition bg-white text-black border border-gray-200 "
             >
               <i className="text-lg fa-regular fa-envelope text-black"></i>
-              Contact Me
+              <span className="flex lg:hidden">Connect</span>
+              <span className="hidden lg:flex">Contact Me</span>
             </Link>
 
             <Link

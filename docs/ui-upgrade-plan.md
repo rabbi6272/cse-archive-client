@@ -100,7 +100,12 @@ Swap each page to the shared components and tokens, and replace Font Awesome ico
    - **Developers:** kept on its original layout and design, at the user's request (2026-11-02). Not part of the redesign.
    - **Alumni:** `features/alumni/`. The page and a server-rendered "Alumni by country" directory are server components; only the Leaflet map (`MapView.tsx`, loaded with `ssr: false`) runs in the browser. **Bug fixed:** CARTO basemap tiles now require an API key, so every tile showed "API KEY REQUIRED"; the map now uses Esri World Street Map tiles. Popups follow the theme.
    - Deleted the old shelf/alumni components and the unused `app/components/contact&help/developers/profileCard.jsx`, plus their CSS. Added `@types/leaflet`.
-5. **User area** (login, dashboard, notifications, create-snippet): forms on `Input` / `Button` with inline validation instead of `alert()`.
+5. **User area** (login, dashboard, notifications, create-snippet): forms on `Input` / `Button` with inline validation instead of `alert()`. **Done (2026-11-02):** login, create-snippet, notifications and dashboard pages are server shells around client islands (the session lives in localStorage, so the data parts stay client-side).
+   - **Login** (`features/auth/LoginForm.tsx`): same sign-in logic, with inline errors and a show/hide password toggle. Firebase now loads via dynamic import. The pincode is still checked in the browser (restructure step 1).
+   - **Create snippet** (`features/codelibrary/CreateSnippetForm.tsx`): uses the new `Select`, year radio pills and removable tags. After a share it calls the `refreshSnippets` server action (`updateTag("codelibrary")`), so the snippet shows in the library at once.
+   - **Notifications** (`features/notifications/NotificationList.tsx`): the live list with typed icons, skeletons, and an empty state when a read fails instead of loading forever.
+   - **Dashboard** (`features/dashboard/Dashboard.tsx`): profile, Nutrinos with an animated history, snippets via the shared `CodeBlock`, inline edit, and a confirm `Modal` for delete. **Bug fixed:** delete called `helper.update()` with a function, which always failed with "Snippet not found" but still deducted 3 Nutrinos. It now calls `helper.remove()`, and points change only on success.
+   - Not restyled yet: `NotificationCenter.jsx` and `ActiveUsersIndicator.jsx` (both open chat, which waits for the chat split). `ChatModals.jsx` has no importers.
 6. **Chat:** only after step 5 of the restructure plan splits `P2PChat.jsx` and `GroupChat.jsx` (~5,000 lines). Restyling them before that means doing the work twice.
 7. **Admin pages:** last, since only admins see them.
 

@@ -24,6 +24,7 @@ How to reorganize ruet-cse-archive by feature, and the order to do it in.
 
 ## Security issues (fix first)
 
+- **The main Realtime Database is open to everyone (most urgent).** Found 2026-11-02: unauthenticated REST requests to `https://cse-archive-codes-default-rtdb.firebaseio.com/<path>.json` can read *and delete* any path (chats, notifications, `userNutrinos`, `presence`, `activeSessions`). The rules actually deployed don't match `database.rules.json`, which requires `auth != null`. Deploy the repo's rules (`firebase deploy --only database`), then check that a request with no `?auth=` gets 401.
 - **Anyone can read every user's pincode.** `app/components/user/Login.jsx` looks up the user record in the browser and compares `pincode` to the typed password on the client, so the browser must be allowed to read the user records.
 - **Admin access is only checked in the browser.** The admin pages (for example `app/admin/add/reviewer/page.jsx`) read `user` from `localStorage` and compare it to a hardcoded list of roll numbers. Anyone can edit `localStorage` to pass that check.
 

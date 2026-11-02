@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 import { cn, focusRing } from "./cn";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "dark" | "link";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "dark" | "link" | "danger";
 export type ButtonSize = "md" | "sm";
 
 const variants: Record<ButtonVariant, string> = {
@@ -12,6 +12,7 @@ const variants: Record<ButtonVariant, string> = {
   // ink/canvas swap in dark mode, so this is black-on-light and light-on-dark
   dark: "bg-ink text-canvas hover:opacity-90",
   link: "text-link underline-offset-4 hover:underline",
+  danger: "bg-error text-white hover:opacity-90",
 };
 
 const sizes: Record<ButtonSize, string> = {

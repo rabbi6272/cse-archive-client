@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import { useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { Search } from "lucide-react";
 import { cn } from "./cn";
 
@@ -94,6 +94,32 @@ export function Textarea({
         className={cn(fieldClasses, "min-h-28 py-3", className)}
         {...props}
       />
+    </Field>
+  );
+}
+
+export function Select({
+  label,
+  hint,
+  error,
+  id,
+  className,
+  children,
+  ...props
+}: SelectHTMLAttributes<HTMLSelectElement> & FieldProps) {
+  const autoId = useId();
+  const inputId = id ?? autoId;
+  return (
+    <Field id={inputId} label={label} hint={hint} error={error}>
+      <select
+        id={inputId}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={describedBy(inputId, { hint, error })}
+        className={cn(fieldClasses, "h-11 cursor-pointer pr-8", className)}
+        {...props}
+      >
+        {children}
+      </select>
     </Field>
   );
 }
