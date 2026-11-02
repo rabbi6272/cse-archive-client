@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { db } from "@/lib/firebase";
 import { ref, onValue } from "firebase/database";
 
-import { nunito } from "@/app/fonts";
 
 export function ProfileCard({
   name,
@@ -27,7 +26,7 @@ export function ProfileCard({
 
   return (
     <div
-      className={`${nunito.className} group mx-auto relative h-[450px] w-full rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer`}
+      className={`group mx-auto relative h-[450px] w-full rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer`}
       onClick={handleCardClick}
     >
       {/* Front Side */}

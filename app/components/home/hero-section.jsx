@@ -23,7 +23,7 @@ export function HeroSection() {
       {/* Headline */}
       <h1
         id="hero-heading"
-        className="reveal mt-4 font-[family-name:var(--font-space-grotesk)] text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 tracking-tight"
+        className="reveal mt-4 text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 tracking-tight"
         style={{ "--reveal-delay": "200ms" }}
       >
         Complete CSE Resources
@@ -37,7 +37,7 @@ export function HeroSection() {
             className="reveal flex flex-col items-center gap-1"
             style={{ "--reveal-delay": `${i * 100}ms` }}
           >
-            <dd className="font-[family-name:var(--font-space-grotesk)] text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 leading-none">
+            <dd className="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 leading-none">
               {stat.value}
             </dd>
             <dt className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">

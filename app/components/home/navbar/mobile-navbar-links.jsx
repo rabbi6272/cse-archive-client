@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { inter } from "@/app/fonts";
 import { useNotificationCount } from "@/lib/useNotificationCount";
 import { NotificationBadge } from "@/app/components/ui/NotificationBadge";
 import AuthUtils from "@/lib/auth-utils-secure";
@@ -71,7 +70,7 @@ export function MobileNavbarLinks() {
   }, []);
 
   return (
-    <div className={`${inter.className} tracking-wide block lg:hidden`}>
+    <div className="tracking-wide block lg:hidden">
       <button ref={buttonRef} onClick={() => setIsNavOpen(!isNavOpen)}>
         <i className="fas fa-bars-staggered text-gray-800 dark:text-gray-200 text-2xl cursor-pointer p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition duration-500"></i>
       </button>

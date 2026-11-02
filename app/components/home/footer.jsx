@@ -1,13 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { inter } from "@/app/fonts";
 
 export function FooterComponent() {
   return (
     <footer
       data-testid="site-footer"
-      className={`${inter.className} morphic-effect bg-morphic-light bg-[#ffffffe6] dark:bg-[#071a26] rounded-t-lg shadow-sm md:flex md:items-center md:justify-between w-full p-6 lg:px-14 lg:py-6 `}
+      className={`morphic-effect bg-morphic-light bg-[#ffffffe6] dark:bg-[#071a26] rounded-t-lg shadow-sm md:flex md:items-center md:justify-between w-full p-6 lg:px-14 lg:py-6 `}
     >
       <div className={`w-full `}>
         <div

@@ -20,7 +20,7 @@ export function ApkDownload() {
             />
             <h2
               id="apk-heading"
-              className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-gray-900 dark:text-gray-100"
+              className="text-xl font-semibold text-gray-900 dark:text-gray-100"
             >
               Take the archive with you
             </h2>
@@ -42,7 +42,7 @@ export function ApkDownload() {
           <div>
             <h2
               id="apk-heading"
-              className="font-[family-name:var(--font-space-grotesk)] text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100"
+              className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100"
             >
               Take the archive with you
             </h2>

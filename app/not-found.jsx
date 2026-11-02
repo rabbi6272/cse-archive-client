@@ -50,8 +50,6 @@ export default function NotFound() {
   return (
     <>
       <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap");
-
         @keyframes pan-grid {
           from {
             background-position: 0 0;
@@ -199,18 +197,16 @@ export default function NotFound() {
       `}</style>
 
       <div
-        className="not-found-grid m-0 p-0 bg-black text-gray-200 flex items-center justify-center overflow-hidden relative"
+        className="not-found-grid font-mono m-0 p-0 bg-black text-gray-200 flex items-center justify-center overflow-hidden relative"
         style={{
-          fontFamily: "'Fira Code', monospace",
           height: "calc(100vh - 120px)",
         }}
       >
         <div className="fade-in-container text-center p-4 max-w-[90vw] w-full">
           <div
-            className="glitch-text text-blue-400 relative mb-4"
+            className="glitch-text font-sans font-bold text-blue-400 relative mb-4"
             data-text="404"
             style={{
-              fontFamily: "'Orbitron', sans-serif",
               fontSize: "clamp(3rem, 8vw, 8rem)",
               textShadow: "0 0 20px #00aaff",
             }}
@@ -241,7 +237,6 @@ export default function NotFound() {
           >
             <code
               className="whitespace-pre-wrap break-words leading-relaxed"
-              style={{ fontFamily: "'Fira Code', monospace" }}
             >
               {terminalText.split("\n").map((line, index) => {
                 const lineData = lines[index];
@@ -261,9 +256,8 @@ export default function NotFound() {
 
           <Link
             href="/"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-black border-none rounded-lg no-underline font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:shadow-blue-400/50"
+            className="inline-block font-sans px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-black border-none rounded-lg no-underline font-bold transition-all duration-300 hover:transform hover:-translate-y-1 hover:scale-105 hover:shadow-lg hover:shadow-blue-400/50"
             style={{
-              fontFamily: "'Orbitron', sans-serif",
               fontSize: "clamp(0.9rem, 2.5vw, 1rem)",
               boxShadow: "0 0 15px #00aaff",
             }}

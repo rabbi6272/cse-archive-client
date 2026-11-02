@@ -102,7 +102,7 @@ export function FAQSection() {
           </p>
           <h2
             id="faq-heading"
-            className="mt-3 font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 tracking-tight"
+            className="mt-3 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 tracking-tight"
           >
             Frequently asked questions
           </h2>
@@ -122,7 +122,7 @@ export function FAQSection() {
                 <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                   <i className={`${card.icon} text-xl`} aria-hidden="true" />
                 </span>
-                <h3 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                   {card.title}
                 </h3>
               </div>

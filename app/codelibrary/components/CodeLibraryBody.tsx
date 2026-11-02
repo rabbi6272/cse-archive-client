@@ -1,7 +1,6 @@
 "use client";
 
 import "highlight.js/styles/monokai.css";
-import { lato } from "@/app/fonts";
 import { useEffect, useRef, useState, lazy, Suspense } from "react";
 
 import { useCodeLibrary } from "./useCodeLibrary";
@@ -98,7 +97,7 @@ export function CodeLibraryBody({
   }, []);
 
   return (
-    <div className={`${lato.className} min-h-screen transition-colors duration-300`}>
+    <div className="min-h-screen transition-colors duration-300">
       <div className="container mx-auto px-4 py-8 max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 relative">
 
         {/* Main content */}

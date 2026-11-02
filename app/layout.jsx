@@ -8,7 +8,7 @@ import GlobalPresenceTracker from "@/app/components/providers/GlobalPresenceTrac
 import NoSSR from "@/app/components/ui/NoSSR";
 import FirebaseObfuscationInit from "@/app/components/security/FirebaseObfuscationInit";
 
-import { dmSans, spaceGrotesk } from "./fonts";
+import { inter, jetbrainsMono } from "./fonts";
 import { Toaster } from "react-hot-toast";
 
 import { Analytics } from "@vercel/analytics/next";
@@ -101,9 +101,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <meta charSet="UTF-8" />
+        {/* Runs before paint so dark: styles don't flash. "theme" in localStorage is for the theme switch (plan step 4); without it, follow the OS. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var m=matchMedia("(prefers-color-scheme: dark)");function a(){var t;try{t=localStorage.getItem("theme")}catch(e){}document.documentElement.classList.toggle("dark",t?t==="dark":m.matches)}a();m.addEventListener("change",a)})()`,
+          }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href="https://ruetcsearchive.app/" />
         <link rel="alternate" href="https://csearchive.vercel.app/" />
@@ -117,10 +127,6 @@ export default function RootLayout({ children }) {
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Fira+Code:wght@400;600&display=swap"
-          rel="stylesheet"
         />
         <link
           precedence="default"
@@ -159,7 +165,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        className={`${dmSans.className} ${spaceGrotesk.variable} antialiased bg-gray-100 dark:bg-[#071a26f1]`}
+        className={`antialiased bg-gray-100 dark:bg-[#071a26f1]`}
         suppressHydrationWarning={true}
       >
         <Providers>

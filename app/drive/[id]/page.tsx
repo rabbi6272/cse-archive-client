@@ -13,7 +13,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { motion } from "framer-motion";
-import { lato } from "@/app/fonts";
 import DriveViewSkeleton from "./DriveViewSkeleton";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -268,7 +267,7 @@ export default function DrivePage({
 
       <div className="px-4 md:px-0 md:max-w-[90%] lg:max-w-[80%] xl:max-w-[70%] mx-auto">
         <div
-          className={`${lato.className} bg-[#ffffff] dark:bg-[#071a26] px-4 lg:px-6 xl:px-8 py-4 md:py-8 rounded-2xl md:rounded-xl shadow-lg`}
+          className={`bg-[#ffffff] dark:bg-[#071a26] px-4 lg:px-6 xl:px-8 py-4 md:py-8 rounded-2xl md:rounded-xl shadow-lg`}
         >
           <div className="mx-auto">
             {parentFolderId && (

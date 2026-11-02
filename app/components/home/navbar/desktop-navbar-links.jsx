@@ -1,10 +1,9 @@
 import { LoginButton } from "./login-button";
 import Link from "next/link";
-import { inter } from "@/app/fonts";
 
 export function DesktopNavbarLinks() {
   return (
-    <div className={`${inter.className} desktop-menu hidden lg:block`}>
+    <div className="desktop-menu hidden lg:block">
       <div className="flex items-baseline space-x-1 text-gray-700 dark:text-gray-200">
         {/* <!-- Nav Item 1 --> */}
         <div className="nav-item relative">

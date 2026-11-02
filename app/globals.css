@@ -1,5 +1,95 @@
 @import "tailwindcss";
 
+/* dark: follows a .dark class on <html>, set before paint by the script in app/layout.jsx */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens. Values and contrast checks: docs/ui-upgrade-plan.md, Phase 0. */
+:root {
+  --primary: #2563eb;
+  --primary-pressed: #1d4ed8;
+  --link: #2563eb;
+  --canvas: #ffffff;
+  --surface: #f6f5f4;
+  --surface-soft: #fafaf9;
+  --hairline: #e5e3df;
+  --hairline-strong: #c8c4be;
+  --ink: #1a1a1a;
+  --charcoal: #37352f;
+  --ink-soft: #5d5b54;
+  --steel: #696762;
+  --ink-faint: #a4a097;
+  --error: #c92a2a;
+  --success: #15803d;
+  --warning: #c2410c;
+  --tint-peach: #ffe8d4;
+  --tint-rose: #fde0ec;
+  --tint-mint: #d9f3e1;
+  --tint-lavender: #e6e0f5;
+  --tint-sky: #dcecfa;
+  --tint-yellow: #fef7d6;
+}
+
+.dark {
+  --link: #60a5fa;
+  --canvas: #071a26;
+  --surface: #0c2433;
+  --surface-soft: #0a1f2c;
+  --hairline: #1e3a4c;
+  --hairline-strong: #2c4a5e;
+  --ink: #f1f5f9;
+  --charcoal: #e2e8f0;
+  --ink-soft: #b4c0cc;
+  --steel: #8b9bab;
+  --ink-faint: #6b7d8f;
+  --error: #f87171;
+  --success: #4ade80;
+  --warning: #fb923c;
+  --tint-peach: #3b2618;
+  --tint-rose: #3a1d2c;
+  --tint-mint: #14301f;
+  --tint-lavender: #251f3d;
+  --tint-sky: #132b42;
+  --tint-yellow: #33300f;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-pressed: var(--primary-pressed);
+  --color-link: var(--link);
+  --color-brand-navy: #071a26;
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-ink: var(--ink);
+  --color-charcoal: var(--charcoal);
+  --color-ink-soft: var(--ink-soft);
+  --color-steel: var(--steel);
+  /* ink-faint fails AA as text: disabled and decorative use only */
+  --color-ink-faint: var(--ink-faint);
+  --color-error: var(--error);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-tint-peach: var(--tint-peach);
+  --color-tint-rose: var(--tint-rose);
+  --color-tint-mint: var(--tint-mint);
+  --color-tint-lavender: var(--tint-lavender);
+  --color-tint-sky: var(--tint-sky);
+  --color-tint-yellow: var(--tint-yellow);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-button: 8px;
+  --radius-card: 12px;
+
+  --shadow-subtle: 0 1px 2px 0 rgba(15, 15, 15, 0.04);
+  --shadow-card: 0 4px 12px 0 rgba(15, 15, 15, 0.08);
+  --shadow-mockup: 0 24px 48px -8px rgba(15, 15, 15, 0.2);
+  --shadow-modal: 0 16px 48px -8px rgba(15, 15, 15, 0.16);
+}
+
 @theme {
   /* Hero image styling */
   --animate-scale-up: scaleUp 1s ease-in-out;
@@ -260,9 +350,6 @@ textarea,
   transform: translateY(0);
 }
 
-.navbar a {
-  font-family: Inter, sans-serif;
-}
 
 .mobile-navbar {
   position: fixed;
@@ -342,7 +429,7 @@ textarea,
 
 .ai-message code {
   border-radius: 0.25rem;
-  font-family: "Courier New", monospace;
+  font-family: var(--font-mono);
 }
 
 .ai-message pre {
@@ -719,7 +806,6 @@ code {
   font-weight: 800;
   text-transform: uppercase;
   font-size: 20px;
-  font-family: "Montserrat", sans-serif;
   letter-spacing: 0.4px;
   padding-bottom: 5px;
 }
@@ -730,7 +816,6 @@ code {
   font-size: 14px;
   letter-spacing: 0.4px;
   font-weight: 400;
-  font-family: "Montserrat", sans-serif;
 }
 
 .front-icons {

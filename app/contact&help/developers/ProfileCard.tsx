@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 
 import rabbi from "@/public/images/developers/rabbi2.jpg";
-import { lato, nunito } from "@/app/fonts";
 import { memo } from "react";
 
 interface ProfileCardProps {
@@ -19,7 +18,7 @@ export const ProfileCard = memo(({ name = "Fazle Rabbi", image = rabbi, location
 
   return (
     <div
-      className={`${lato.className} p-3 bg-white w-full h-auto lg:w-[350px] rounded-2xl overflow-hidden shadow-xl hover:shadow-lg`}
+      className={`p-3 bg-white w-full h-auto lg:w-[350px] rounded-2xl overflow-hidden shadow-xl hover:shadow-lg`}
     >
       <div className="relative">
         {/* Image Section */}
@@ -33,7 +32,7 @@ export const ProfileCard = memo(({ name = "Fazle Rabbi", image = rabbi, location
 
         {/* Content Section */}
         <div className="rounded-b-xl absolute bottom-0 left-0 w-full p-3 text-white bg-gradient-to-t from-black via-black/80 to-transparent">
-          <h2 className={`${nunito.className} text-lg font-semibold leading-5`}>{name}</h2>
+          <h2 className="text-lg font-semibold leading-5">{name}</h2>
           <p className="text-sm text-gray-400 flex items-center">
             <svg
               className="w-4 h-4 mr-1"
