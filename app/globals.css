@@ -186,6 +186,11 @@
   }
 }
 
+/* Lock page scroll behind any open modal <dialog> (Modal, MobileMenu, Drive preview). */
+html:has(dialog[open]:modal) {
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     animation: none;
@@ -922,33 +927,6 @@ code {
   animation: role-shimmer 3s ease-in-out infinite;
 }
 
-/* Drive view skeleton shimmer */
-@keyframes drive-skeleton-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.drive-skeleton {
-  background: linear-gradient(90deg,
-      theme(--color-gray-500) 25%,
-      theme(--color-gray-300) 50%,
-      theme(--color-gray-500) 75%);
-  background-size: 200% 100%;
-  animation: drive-skeleton-shimmer 3s ease-in-out infinite;
-  border-radius: 1rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .drive-skeleton {
-    animation: none;
-  }
-}
-
 /* Resources page optimized animations */
 @keyframes fade-in {
   from {
@@ -980,14 +958,3 @@ code {
   animation: slide-up 0.6s ease-out;
 }
 
-/* Optimized resource card hover effects */
-.resource-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.resource-card:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
