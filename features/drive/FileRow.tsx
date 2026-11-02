@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { cn, focusRing } from "@/components/ui";
 import { isFolder, type DriveFile } from "./api";
+import { PreviewButton } from "./FilePreview";
 
 function fileIcon(mimeType: string): { icon: LucideIcon; className: string } {
   if (mimeType.includes("folder")) return { icon: Folder, className: "text-link" };
@@ -36,8 +37,8 @@ function formatSize(bytes?: string) {
 
 const dateFormat = new Intl.DateTimeFormat("en", { day: "numeric", month: "short", year: "numeric" });
 
-// One row: folders link to their own /drive/<id> URL, files open the preview.
-export function FileRow({ file, onPreview }: { file: DriveFile; onPreview: (file: DriveFile) => void }) {
+// Server component. Folders link to their own /drive/<id> URL; files open the preview (?preview=<id>).
+export function FileRow({ file }: { file: DriveFile }) {
   const folder = isFolder(file);
   const { icon: Icon, className: iconClass } = fileIcon(file.mimeType);
   const meta = [
@@ -69,9 +70,9 @@ export function FileRow({ file, onPreview }: { file: DriveFile; onPreview: (file
           {body}
         </Link>
       ) : (
-        <button type="button" onClick={() => onPreview(file)} className={mainClasses}>
+        <PreviewButton fileId={file.id} className={mainClasses}>
           {body}
-        </button>
+        </PreviewButton>
       )}
       {file.webContentLink && (
         <a

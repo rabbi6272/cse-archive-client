@@ -71,6 +71,8 @@
   --color-brand-navy: #071a26;
   /* Eyebrow/accent text on brand-navy (fixed, the band is navy in both themes): 10:1 */
   --color-on-navy-accent: #93c5fd;
+  /* Code block surface, matches highlight.js github-dark (both themes) */
+  --color-code-bg: #0d1117;
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-surface-soft: var(--surface-soft);
@@ -102,6 +104,38 @@
   --shadow-card: 0 4px 12px 0 rgba(15, 15, 15, 0.08);
   --shadow-mockup: 0 24px 48px -8px rgba(15, 15, 15, 0.2);
   --shadow-modal: 0 16px 48px -8px rgba(15, 15, 15, 0.16);
+
+  /* Motion. Use with motion-safe: so reduced-motion users get none. */
+  --animate-dialog-in: dialog-in 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-drawer-in: drawer-in 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-pop-in: pop-in 0.15s ease-out;
+  --animate-like-pop: like-pop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1.4);
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+
+  @keyframes drawer-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.98);
+    }
+  }
+
+  @keyframes like-pop {
+    50% {
+      transform: scale(1.35);
+    }
+  }
 
   /* Own keyframes: globals.css below overrides .animate-pulse and @keyframes pulse */
   --animate-skeleton: skeleton 1.6s ease-in-out infinite;
@@ -183,6 +217,35 @@
   .reveal {
     animation: rise 0.9s ease-out both;
     animation-delay: var(--reveal-delay, 0s);
+  }
+}
+
+/* Smooth <details> open/close (FAQ, code expand) where supported; instant elsewhere. */
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 0.3s ease,
+      content-visibility 0.3s allow-discrete;
+  }
+
+  details[open]::details-content {
+    height: auto;
+  }
+
+  dialog::backdrop {
+    animation: backdrop-in 0.2s ease-out;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
   }
 }
 

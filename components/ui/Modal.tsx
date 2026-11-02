@@ -38,7 +38,7 @@ export function Modal({ open, onClose, title, children, footer, className }: Mod
       onClick={(e) => e.target === e.currentTarget && onClose()}
       className={cn(
         "m-auto w-[calc(100%-2rem)] max-w-lg rounded-card border border-hairline bg-canvas p-0 text-ink shadow-modal",
-        "backdrop:bg-black/50",
+        "backdrop:bg-black/50 motion-safe:animate-dialog-in",
         className,
       )}
     >

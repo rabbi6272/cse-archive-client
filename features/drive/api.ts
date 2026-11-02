@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+
 export interface DriveFile {
   id: string;
   name: string;
@@ -18,7 +20,7 @@ export interface DriveFolderData {
 export const isFolder = (file: DriveFile) => file.mimeType.includes("folder");
 
 // The Drive API runs on the separate server in cse-archive-server/ (see docs/drive-cache-system.md).
-export async function fetchDriveFolder(folderId: string): Promise<DriveFolderData> {
+async function fetchDriveFolder(folderId: string): Promise<DriveFolderData> {
   const response = await fetch(`${process.env.NEXT_PUBLIC_DRIVE_API_URL}/api/drive`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -33,3 +35,10 @@ export async function fetchDriveFolder(folderId: string): Promise<DriveFolderDat
   }
   return data as DriveFolderData;
 }
+
+// Server-side, cached for 60s per folder. The Drive server has its own cache and clears it on
+// Drive webhooks, so this only adds up to a minute before a new upload shows.
+export const getDriveFolder = (folderId: string) =>
+  unstable_cache(() => fetchDriveFolder(folderId), ["drive-folder", folderId], {
+    revalidate: 60,
+  })();

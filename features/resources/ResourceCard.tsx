@@ -8,7 +8,7 @@ export function ResourceCard({ resource, priority }: { resource: Resource; prior
   const { title, description, image, links } = resource;
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-canvas transition-shadow hover:shadow-card">
+    <article className="flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-canvas transition-[box-shadow,translate] duration-200 hover:shadow-card motion-safe:hover:-translate-y-0.5">
       <Image
         src={image}
         alt=""

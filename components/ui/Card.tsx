@@ -26,7 +26,7 @@ export function Card({ variant = "base", tint, interactive, className, ...props 
         "rounded-card",
         variant === "feature" ? "p-8" : "p-6",
         tint ? cn(tints[tint], "text-charcoal") : "border border-hairline bg-canvas text-ink",
-        interactive && "transition-shadow hover:shadow-card",
+        interactive && "transition-[box-shadow,translate] duration-200 hover:shadow-card motion-safe:hover:-translate-y-0.5",
         className,
       )}
       {...props}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ResourceCard } from "@/features/resources/ResourceCard";
 import { resources } from "@/features/resources/data";
 
-const title = "Academic Resources || RUET CSE Archive";
+const title = "Academic Resources";
 const description =
   "Access comprehensive study materials, course resources, and academic guides for all years of your CSE journey at RUET.";
 
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title,
   description,
   keywords: ["RUET", "CSE", "academic resources", "study materials", "computer science", "engineering"],
-  openGraph: { title, description, type: "website" },
-  twitter: { card: "summary_large_image", title, description },
+  openGraph: { title: `${title} | RUET CSE Archive`, description, type: "website" },
+  twitter: { card: "summary_large_image", title: `${title} | RUET CSE Archive`, description },
 };
 
 export default function ResourcesPage() {

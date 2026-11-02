@@ -52,7 +52,7 @@ export function MobileMenu() {
           setOpen(false);
         }}
         onClick={(e) => e.target === e.currentTarget && setOpen(false)}
-        className="m-0 ml-auto h-dvh max-h-none w-[min(20rem,100%)] bg-canvas p-0 text-ink shadow-modal backdrop:bg-black/50"
+        className="m-0 ml-auto h-dvh max-h-none w-[min(20rem,100%)] bg-canvas p-0 text-ink shadow-modal backdrop:bg-black/50 motion-safe:animate-drawer-in"
       >
         <div className="flex h-full flex-col p-4">
           <div className="mb-2 flex items-center justify-between">

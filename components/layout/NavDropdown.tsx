@@ -67,7 +67,7 @@ export function NavDropdown({ group }: { group: NavGroup }) {
       {open && (
         <ul
           id={menuId}
-          className="absolute top-full left-0 z-50 mt-2 min-w-48 rounded-card border border-hairline bg-canvas p-1.5 shadow-modal"
+          className="absolute top-full left-0 z-50 mt-2 min-w-48 rounded-card border border-hairline bg-canvas p-1.5 shadow-modal motion-safe:animate-pop-in"
         >
           {group.items.map((item) => (
             <li key={item.href}>
