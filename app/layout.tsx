@@ -13,9 +13,11 @@ import { Toaster } from "react-hot-toast";
 
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { MainPage } from "./mainPage";
+import { Navbar } from "@/components/layout/Navbar";
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL("https://ruetcsearchive.app"),
   title: {
     default: "RUET CSE Archive - Complete Resource Hub for CSE Students",
@@ -99,7 +101,7 @@ export const metadata = {
   classification: "Educational Resource Platform",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
@@ -108,7 +110,7 @@ export default function RootLayout({ children }) {
     >
       <head>
         <meta charSet="UTF-8" />
-        {/* Runs before paint so dark: styles don't flash. "theme" in localStorage is for the theme switch (plan step 4); without it, follow the OS. */}
+        {/* Runs before paint so dark: styles don't flash (same rule as components/layout/ThemeToggle.tsx). "theme" in localStorage is for the theme switch (plan step 4); without it, follow the OS. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){var m=matchMedia("(prefers-color-scheme: dark)");function a(){var t;try{t=localStorage.getItem("theme")}catch(e){}document.documentElement.classList.toggle("dark",t?t==="dark":m.matches)}a();m.addEventListener("change",a)})()`,
@@ -178,7 +180,14 @@ export default function RootLayout({ children }) {
                 <FirebaseObfuscationInit />
               </NoSSR>
               <GlobalPresenceTracker />
-              <MainPage>{children}</MainPage>
+              <a
+                href="#main"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-button focus:bg-canvas focus:px-4 focus:py-2 focus:text-ink focus:shadow-modal"
+              >
+                Skip to content
+              </a>
+              <Navbar />
+              <main id="main">{children}</main>
             </P2PChatProvider>
           </PageTitleProvider>
         </Providers>

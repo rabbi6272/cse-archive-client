@@ -3,9 +3,10 @@ import { FeaturesList } from "@/app/components/home/features-list";
 import { HeroImage } from "@/app/components/home/hero-image";
 import { HeroSection } from "@/app/components/home/hero-section";
 import { ApkDownload } from "@/app/components/home/apk-download";
-import { FooterComponent } from "@/app/components/home/footer";
+import { Footer } from "@/components/layout/Footer";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "RUET CSE Archive - A Complete Resource Hub for RUET CSE Students",
   description:
     "The ultimate archive of Computer Science & Engineering resources for RUET students. Access comprehensive notes, code libraries, academic materials, alumni network and study materials all in one place.",
@@ -71,7 +72,7 @@ export default function Home() {
       <FAQSection />
 
       {/* Footer Section */}
-      <FooterComponent />
+      <Footer />
     </section>
   );
 }

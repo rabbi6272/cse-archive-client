@@ -8,7 +8,7 @@ export function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>
   return (
     <div
       aria-hidden
-      className={cn("animate-pulse rounded-button bg-surface motion-reduce:animate-none", className)}
+      className={cn("animate-skeleton rounded-button bg-surface motion-reduce:animate-none", className)}
       {...props}
     />
   );

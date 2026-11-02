@@ -52,6 +52,18 @@
   --tint-yellow: #33300f;
 }
 
+/* Page width and side gutters: 1280px max, 16px gutters on mobile, 32px from md. */
+@utility page-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1280px;
+  padding-inline: 16px;
+
+  @media (width >= 48rem) {
+    padding-inline: 32px;
+  }
+}
+
 @theme inline {
   --color-primary: var(--primary);
   --color-primary-pressed: var(--primary-pressed);
@@ -88,6 +100,15 @@
   --shadow-card: 0 4px 12px 0 rgba(15, 15, 15, 0.08);
   --shadow-mockup: 0 24px 48px -8px rgba(15, 15, 15, 0.2);
   --shadow-modal: 0 16px 48px -8px rgba(15, 15, 15, 0.16);
+
+  /* Own keyframes: globals.css below overrides .animate-pulse and @keyframes pulse */
+  --animate-skeleton: skeleton 1.6s ease-in-out infinite;
+
+  @keyframes skeleton {
+    50% {
+      opacity: 0.5;
+    }
+  }
 }
 
 @theme {
@@ -174,33 +195,6 @@
 ::-webkit-scrollbar-thumb {
   background: #3b82f6;
   border-radius: 2px;
-}
-
-.shiny-text {
-  /* color: #b5b5b5a4;  */
-  background: linear-gradient(120deg,
-      rgba(255, 255, 255, 0) 40%,
-      rgba(255, 255, 255, 0.9) 50%,
-      rgba(255, 255, 255, 0) 60%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  display: inline-block;
-  animation: shine 2.5s linear infinite;
-}
-
-@keyframes shine {
-  0% {
-    background-position: 100%;
-  }
-
-  100% {
-    background-position: -100%;
-  }
-}
-
-.shiny-text.disabled {
-  animation: none;
 }
 
 .glass-card {
@@ -310,10 +304,7 @@ a,
 nav,
 [role="navigation"],
 [role="menubar"],
-[role="menu"],
-.navbar,
-.dropdown,
-.mobile-menu {
+[role="menu"] {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -331,64 +322,6 @@ textarea,
   -webkit-user-select: text;
   -moz-user-select: text;
   -ms-user-select: text;
-}
-
-.desktop-menu .nav-item button:hover {
-  transition-duration: 500ms;
-}
-
-.dropdown {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.5s ease;
-}
-
-.nav-item:hover .dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-
-.mobile-navbar {
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  z-index: 50;
-}
-
-.hide {
-  animation: slide-out 0.3s forwards;
-}
-
-.show {
-  animation: slide-in 0.3s forwards;
-}
-
-@keyframes slide-in {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
 }
 
 /* Codelibrary section */

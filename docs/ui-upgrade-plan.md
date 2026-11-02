@@ -77,7 +77,16 @@ Add a `/dev/ui` page that renders every variant in light and dark. Remove it fro
 - **Navbar:** a sticky 64px white bar with a `hairline` bottom border (navy in dark mode) and a hamburger menu below 1024px. Add a light/dark/system theme switch.
 - **Footer:** link columns, collapsing to an accordion on mobile.
 - **Page container:** 1280px max width with 32px gutters (16px on mobile), and the DESIGN.md section spacing (64px / 96px).
-- **Page states:** add `error.jsx` next to `loading.jsx`, and give `not-found.jsx` the new look.
+- **Page states:** add `error.tsx` next to `loading.tsx`, and give `not-found.tsx` the new look.
+
+**Done (2026-11-02).** All in TypeScript, in `components/layout/`:
+- `Navbar` replaces `app/components/home/navbar/*` and `app/mainPage.jsx`. It's solid all the time now (the old bar was see-through until you scrolled). The links come from one list in `nav-links.ts`. Dropdowns open on click and close on Esc or a click outside (the old ones opened on hover only, so keyboards couldn't reach them). Below 1024px a `MobileMenu` drawer on `<dialog>` takes over. `ThemeToggle` cycles system → light → dark and saves the choice in `localStorage.theme`. `AccountButton` is the old login button without the shine effect.
+- `Footer` replaces `app/components/home/footer.jsx`. It's still only on the home page: moving it into the layout would put it under full-height pages like chat. Its 3 columns of 2 links fit in a 2-column grid on mobile, so there's no accordion.
+- `page-container` (in `globals.css`) is the 1280px / 16–32px gutter wrapper. Use it on every page in step 5.
+- `app/error.tsx` is new; `loading.tsx` and `not-found.tsx` are rewritten. The layout has a "Skip to content" link to `#main`.
+- `layout.jsx` and `page.jsx` are now `.tsx`. The old navbar CSS is removed (`.dropdown`, `.mobile-navbar`, `.shiny-text` and their keyframes).
+- Not changed: the `<body>` background is still `bg-gray-100 dark:bg-[#071a26f1]`, so pages that haven't been moved over keep their look. Change it to tokens once step 5 is done.
+- Found: `globals.css` overrides Tailwind's `.animate-pulse` and `@keyframes pulse` (the code library relies on that), so `Skeleton` uses its own `animate-skeleton`.
 
 ### 5. Move pages over, by traffic
 
