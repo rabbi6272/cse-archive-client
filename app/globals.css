@@ -69,6 +69,8 @@
   --color-primary-pressed: var(--primary-pressed);
   --color-link: var(--link);
   --color-brand-navy: #071a26;
+  /* Eyebrow/accent text on brand-navy (fixed, the band is navy in both themes): 10:1 */
+  --color-on-navy-accent: #93c5fd;
   --color-canvas: var(--canvas);
   --color-surface: var(--surface);
   --color-surface-soft: var(--surface-soft);
@@ -181,6 +183,12 @@
   .reveal {
     animation: rise 0.9s ease-out both;
     animation-delay: var(--reveal-delay, 0s);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
   }
 }
 

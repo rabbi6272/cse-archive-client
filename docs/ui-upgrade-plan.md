@@ -92,7 +92,7 @@ Add a `/dev/ui` page that renders every variant in light and dark. Remove it fro
 
 Swap each page to the shared components and tokens, and replace Font Awesome icons as you go. Each page is one PR. Suggested order (check Vercel Analytics to confirm which pages get the most visits):
 
-1. **Home** (`app/page.jsx`): navy hero band, a primary + secondary CTA pair, features as tinted cards, FAQ as `faq-accordion-item`.
+1. **Home** (`app/page.jsx`): navy hero band, a primary + secondary CTA pair, features as tinted cards, FAQ as `faq-accordion-item`. **Done (2026-11-02):** the sections now live in `features/home/`. `app/components/home/` is gone, including the unused `slideshow.jsx` and `hero-blur-text.jsx`. The FAQ uses native `<details>`, the hero photo overlaps the navy band, and `.reveal` respects reduced motion. Added: an `on-dark` `Button` variant and an `on-navy-accent` color token (9.8:1 on navy).
 2. **Resources and Drive:** cards for courses, a cleaner file list, Drive skeleton made with the shared `Skeleton`, empty-folder and error states.
 3. **Code library** (list and `[id]`): `SearchInput`, tag badges, snippet cards, a code block on the mono font.
 4. **Shelf, Alumni, Developers:** card grids. Alumni keeps the Leaflet map with the new card style.

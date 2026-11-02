@@ -1,8 +1,7 @@
-import { FAQSection } from "@/app/components/home/faq-section";
-import { FeaturesList } from "@/app/components/home/features-list";
-import { HeroImage } from "@/app/components/home/hero-image";
-import { HeroSection } from "@/app/components/home/hero-section";
-import { ApkDownload } from "@/app/components/home/apk-download";
+import { ApkDownload } from "@/features/home/ApkDownload";
+import { FAQSection } from "@/features/home/FAQSection";
+import { FeaturesList } from "@/features/home/FeaturesList";
+import { HeroSection } from "@/features/home/HeroSection";
 import { Footer } from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
@@ -55,24 +54,12 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <section>
-      {/* Hero Section */}
+    <div className="bg-canvas">
       <HeroSection />
-
-      {/* Campus Image */}
-      <HeroImage />
-
-      {/* Features List */}
       <FeaturesList />
-
-      {/* Semicolon APK Download */}
       <ApkDownload />
-
-      {/* FAQ Section */}
       <FAQSection />
-
-      {/* Footer Section */}
       <Footer />
-    </section>
+    </div>
   );
 }
