@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import toast from "react-hot-toast";
-import { AlertCircle, ChevronDown, Code2, History, Pencil, Plus, Trash2 } from "lucide-react";
+import { AlertCircle, ChevronDown, Code2, History, LogOut, Pencil, Plus, Trash2 } from "lucide-react";
 import { CodeSnippetHelper } from "@/helpers/CodeSnippetHelper";
 import { getUserDisplayRole } from "@/lib/auth-utils";
 import AuthUtils from "@/lib/auth-utils-secure";
@@ -18,6 +18,7 @@ import {
 import NotificationCenter from "@/app/user/dashboard/components/NotificationCenter";
 import ActiveUsersIndicator from "@/app/components/ui/ActiveUsersIndicator";
 import { Badge, Button, buttonClasses, cn, EmptyState, Input, Modal, Skeleton, Textarea } from "@/components/ui";
+import { logoutAction } from "@/features/auth/actions";
 import { refreshSnippets } from "@/features/codelibrary/actions";
 import { CodeBlock } from "@/features/codelibrary/CodeBlock";
 
@@ -175,6 +176,20 @@ export function Dashboard() {
           <div className="flex items-start gap-3">
             <ActiveUsersIndicator showDetails className="shrink-0" />
             <NotificationCenter userRoll={user.roll} />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                // Clear the server session cookie, then the display copy other features read.
+                await logoutAction();
+                AuthUtils.logout();
+                router.push("/");
+                router.refresh();
+              }}
+            >
+              <LogOut className="size-4" aria-hidden />
+              Log out
+            </Button>
           </div>
         </div>
 

@@ -1,90 +1,84 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
+import { startTransition, useActionState, useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
-import { toast } from "react-hot-toast";
 import AuthUtils from "@/lib/auth-utils-secure";
 import { Button, cn, focusRing, Input } from "@/components/ui";
+import { getViewerAction, loginAction, type LoginState } from "./actions";
+import { PROFILE_SITE } from "./links";
+import type { Viewer } from "./server";
 
-// Same sign-in flow as before; only the UI changed.
-// shortcut: the pincode is compared in the browser, so clients can read every user's pincode.
-// Fix this with the server-side login in docs/restructure-plan.md step 1, not here.
-export function LoginForm() {
+
+const AUTH_ERRORS: Record<string, string> = {
+  google: "Google sign-in didn't go through. Please try again.",
+  "no-account": "No RUET CSE account uses that Google email. Create one on the profile site first.",
+  claim: "Your account needs to be reclaimed with an email link first.",
+  "no-profile": "Your account has no profile yet. Create it first.",
+};
+
+// Display-only copy for the features that still read localStorage.user (AuthUtils).
+// The session itself is the HttpOnly cookie set by the server; this copy grants nothing.
+function rememberViewer(v: Viewer) {
+  AuthUtils.setUserData({
+    email: v.email,
+    roll: v.roll,
+    name: v.name,
+    profilePictureUrl: v.profilePictureUrl,
+    expiry: Date.now() + 5 * 24 * 60 * 60 * 1000, // matches the 5-day session cookie
+  });
+}
+
+// resume: the server already sees a session (Google redirect, or a returning visitor whose
+// localStorage copy is gone); finish by fetching the profile instead of asking again.
+export function LoginForm({ resume = false }: { resume?: boolean }) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const params = useSearchParams();
+  const next = params.get("next") ?? "";
+  const [state, submit, pending] = useActionState<LoginState, FormData>(loginAction, null);
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [finishing, setFinishing] = useState(resume);
+
+  // Password sign-in succeeded: store the display copy and leave.
+  useEffect(() => {
+    if (!state?.ok) return;
+    rememberViewer(state.viewer);
+    router.replace(state.next);
+  }, [state, router]);
 
   useEffect(() => {
-    if (AuthUtils.isAuthenticated()) router.push("/user/dashboard");
-    // Start App Check (reCAPTCHA) on page load, as the old form did, so it has a token by submit time.
-    import("@/utils/UsersDB");
-  }, [router]);
+    if (!resume) return;
+    getViewerAction().then((viewer) => {
+      if (!viewer) return setFinishing(false);
+      rememberViewer(viewer);
+      router.replace(next.startsWith("/") && !next.startsWith("//") ? next : "/user/dashboard");
+    });
+  }, [resume, next, router]);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      // Dynamic import keeps Firebase out of the page's first download (already loading since mount).
-      const [{ UsersDB, USERS_COLLECTION }, { collection, getDocs, limit, query, where }] = await Promise.all([
-        import("@/utils/UsersDB"),
-        import("firebase/firestore"),
-      ]);
-      const snap = await getDocs(
-        query(collection(UsersDB, USERS_COLLECTION), where("email", "==", email.trim().toLowerCase()), limit(1)),
-      );
-      // Firestore user documents: fullName, email, roll, pincode, profilePicture.url
-      const user = snap.empty ? null : snap.docs[0].data();
-
-      if (!user) return setError("No account found with that email.");
-      if (String(user.pincode || "") !== password) return setError("Incorrect password.");
-
-      const stored = AuthUtils.setUserData({
-        email: user.email,
-        roll: user.roll,
-        name: user.fullName,
-        profilePictureUrl: user.profilePicture?.url,
-        expiry: Date.now() + 24 * 60 * 60 * 1000,
-      });
-      if (!stored) {
-        const { default: FirebaseAuthService } = await import("@/lib/firebase-auth-service");
-        await FirebaseAuthService.signOut();
-        return setError("Couldn't save your session. Check that cookies and site data are allowed.");
-      }
-
-      toast.success("Login successful!");
-      router.push("/user/dashboard");
-    } catch (err) {
-      console.error("Login error:", err);
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const errorCode = state && !state.ok ? state.code : params.get("authError");
+  const errorText = state && !state.ok ? state.message : AUTH_ERRORS[params.get("authError") ?? ""];
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <Input
-        label="Email"
-        type="email"
-        autoComplete="email"
-        placeholder="student@ruet.ac.bd"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
+    <form
+      // onSubmit, not action=: React resets action forms after submit, which would clear the email
+      // on a wrong password.
+      onSubmit={(e) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        startTransition(() => submit(data));
+      }}
+      className="flex flex-col gap-4"
+    >
+      <input type="hidden" name="next" value={next} />
+      <Input label="Email" name="email" type="email" autoComplete="email" placeholder="student@ruet.ac.bd" required />
 
       <div className="relative">
         <Input
           label="Password"
+          name="password"
           type={showPassword ? "text" : "password"}
           autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="pr-12"
           required
         />
@@ -102,16 +96,42 @@ export function LoginForm() {
         </button>
       </div>
 
-      {error && (
-        <p role="alert" className="flex items-center gap-2 rounded-button bg-error/10 px-3 py-2 text-sm text-error motion-safe:animate-pop-in">
-          <AlertCircle className="size-4 shrink-0" aria-hidden />
-          {error}
-        </p>
+      {errorText && (
+        <div
+          role="alert"
+          className="flex flex-col gap-1 rounded-button bg-error/10 px-3 py-2 text-sm text-error motion-safe:animate-pop-in"
+        >
+          <p className="flex items-center gap-2">
+            <AlertCircle className="size-4 shrink-0" aria-hidden />
+            {errorText}
+          </p>
+          {errorCode === "claim" && (
+            <a href={`${PROFILE_SITE}/profiles/claim`} className="pl-6 font-medium underline">
+              Reclaim my profile
+            </a>
+          )}
+          {(errorCode === "no-profile" || errorCode === "no-account") && (
+            <a href={`${PROFILE_SITE}/profiles/create`} className="pl-6 font-medium underline">
+              Create my profile
+            </a>
+          )}
+          {(errorCode === "invalid" || errorCode === "throttled") && (
+            <a href={`${PROFILE_SITE}/profiles/forgot-password`} className="pl-6 font-medium underline">
+              Reset my password
+            </a>
+          )}
+        </div>
       )}
 
-      <Button type="submit" loading={loading} className="mt-2 w-full">
-        {loading ? "Logging in…" : "Log in"}
+      <Button type="submit" loading={pending || finishing} className="mt-2 w-full">
+        {finishing ? "Finishing sign-in…" : pending ? "Logging in…" : "Log in"}
       </Button>
+      <Link
+        href={`${PROFILE_SITE}/profiles/forgot-password`}
+        className="self-center text-sm text-link hover:underline"
+      >
+        Forgot password?
+      </Link>
     </form>
   );
 }
