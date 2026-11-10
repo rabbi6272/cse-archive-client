@@ -1,5 +1,7 @@
 import { unstable_cache } from "next/cache";
 
+export const ROOT_FOLDER_ID = "1xbyCdj3XQ9AsCCF8ImI13HCo25JEhgUJ";
+
 export interface DriveFile {
   id: string;
   name: string;
@@ -19,9 +21,15 @@ export interface DriveFolderData {
 
 export const isFolder = (file: DriveFile) => file.mimeType.includes("folder");
 
+const getDriveApiUrl = () =>
+  (process.env.NEXT_PUBLIC_DRIVE_API_URL || "https://cse-archive-server.onrender.com").replace(
+    /\/+$/,
+    "",
+  );
+
 // The Drive API runs on the separate server in cse-archive-server/ (see docs/drive-cache-system.md).
-async function fetchDriveFolder(folderId: string): Promise<DriveFolderData> {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_DRIVE_API_URL}/api/drive`, {
+export async function fetchDriveFolder(folderId: string): Promise<DriveFolderData> {
+  const response = await fetch(`${getDriveApiUrl()}/api/drive`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ folderId }),

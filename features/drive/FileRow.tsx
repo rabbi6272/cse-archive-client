@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ChevronRight,
@@ -14,6 +16,7 @@ import {
 import { cn, focusRing } from "@/components/ui";
 import { isFolder, type DriveFile } from "./api";
 import { PreviewButton } from "./FilePreview";
+import { usePrefetchDriveFolder } from "./queries";
 
 function fileIcon(mimeType: string): { icon: LucideIcon; className: string } {
   if (mimeType.includes("folder")) return { icon: Folder, className: "text-link" };
@@ -37,8 +40,9 @@ function formatSize(bytes?: string) {
 
 const dateFormat = new Intl.DateTimeFormat("en", { day: "numeric", month: "short", year: "numeric" });
 
-// Server component. Folders link to their own /drive/<id> URL; files open the preview (?preview=<id>).
+// Folders link to their own /drive/<id> URL (with hover prefetching); files open the preview (?preview=<id>).
 export function FileRow({ file }: { file: DriveFile }) {
+  const prefetch = usePrefetchDriveFolder();
   const folder = isFolder(file);
   const { icon: Icon, className: iconClass } = fileIcon(file.mimeType);
   const meta = [
@@ -66,7 +70,12 @@ export function FileRow({ file }: { file: DriveFile }) {
   return (
     <li className="flex items-center gap-1 border-b border-hairline px-1 last:border-b-0 md:px-2">
       {folder ? (
-        <Link href={`/drive/${file.id}`} className={mainClasses}>
+        <Link
+          href={`/drive/${file.id}`}
+          className={mainClasses}
+          onMouseEnter={() => prefetch(file.id)}
+          onFocus={() => prefetch(file.id)}
+        >
           {body}
         </Link>
       ) : (
