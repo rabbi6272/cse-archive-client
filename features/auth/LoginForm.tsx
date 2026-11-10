@@ -1,9 +1,11 @@
 "use client";
 
-import { startTransition, useActionState, useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { AlertCircle, Eye, EyeOff } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { AlertCircle } from "lucide-react";
+import { Eye, EyeOff } from "lucide";
+import { MorphIcon } from "morphicons/react";
+import { toast } from "react-hot-toast";
 import AuthUtils from "@/lib/auth-utils-secure";
 import { Button, cn, focusRing, Input } from "@/components/ui";
 import { getViewerAction, loginAction, type LoginState } from "./actions";
@@ -92,7 +94,7 @@ export function LoginForm({ resume = false }: { resume?: boolean }) {
             focusRing,
           )}
         >
-          {showPassword ? <EyeOff className="size-4" aria-hidden /> : <Eye className="size-4" aria-hidden />}
+          <MorphIcon icon={showPassword ? EyeOff : Eye} size={16} reducedMotion="user" />
         </button>
       </div>
 
