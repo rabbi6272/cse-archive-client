@@ -3637,6 +3637,11 @@ lucide-react@^1.66.0:
   resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-1.71.0.tgz#10594c541a08482b10ff918082c60def5e43468a"
   integrity sha512-8YtvF+bqT/EMqAXU7kWvYdRu+TV9j4kS1eIS7IbN1j1Z1DgupbrTL0nDIygdqgBDTD7AJPP607VdVgzDTar4zA==
 
+lucide@^1.66.0:
+  version "1.71.0"
+  resolved "https://registry.yarnpkg.com/lucide/-/lucide-1.71.0.tgz#8644aaa5f6e655683935734686ff277e6f78399c"
+  integrity sha512-n6KHs0byHCG6fAQKBb+UhZtrUZM6v0ithDErPte6PkWkSijH0tPQoETnMobubUSj4okhAMeE6xUc/5S8LndrRg==
+
 magic-string@^1.1.0:
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-1.4.5.tgz#201c852d51eb0664d6f66cf7ab93b20b416e48d9"
@@ -3697,6 +3702,11 @@ minimist@^1.2.0, minimist@^1.2.6:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
   integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
+
+morphicons@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/morphicons/-/morphicons-2.0.2.tgz#13bb4e7f359f29c5a50683fadcf742f8ce1d5323"
+  integrity sha512-/GFSrsZDuyZ3a2QK8wXnVpsHzrVIZ8eLhg0QbGxeeOPyOZmtKUC8i0z3QQ3bbIX5DV/LOLYpp/8unJMWQU0Qgw==
 
 motion-dom@^12.43.0:
   version "12.43.0"
