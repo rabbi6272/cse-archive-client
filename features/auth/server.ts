@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 // ones the profile site uses). This site only stores the session as an HttpOnly cookie on its own
 // domain: a cookie set by the Render domain would be a blocked third-party cookie.
 
-const AUTH_API = `${process.env.AUTH_API_URL ?? process.env.NEXT_PUBLIC_DRIVE_API_URL}/api/auth`;
+const AUTH_API = `${process.env.AUTH_API_URL ?? process.env.NEXT_PUBLIC_DRIVE_API_URL}`;
 const COOKIE = "__session";
 
 export type Viewer = { uid: string; email: string; roll: string; name: string; profilePictureUrl: string };
@@ -17,12 +17,28 @@ export type AuthResult =
 
 // Server-to-server call; AUTH_SERVICE_SECRET must match the one set on Render.
 export async function authApi<T>(path: string, body?: Record<string, unknown>): Promise<T> {
-  const res = await fetch(`${AUTH_API}${path}`, {
+  const base = AUTH_API.replace(/\/+$/, "");
+  // Try canonical /api/v1/auth first
+  let res = await fetch(`${base}/api/v1/auth${path}`, {
     method: body ? "POST" : "GET",
     headers: { Authorization: `Bearer ${process.env.AUTH_SERVICE_SECRET}`, "Content-Type": "application/json" },
     body: body ? JSON.stringify(body) : undefined,
     cache: "no-store",
   });
+
+  // If remote server returns 404 (e.g. Render pre-v1 deployment), fallback to legacy /api/auth
+  if (res.status === 404) {
+    const legacyRes = await fetch(`${base}/api/auth${path}`, {
+      method: body ? "POST" : "GET",
+      headers: { Authorization: `Bearer ${process.env.AUTH_SERVICE_SECRET}`, "Content-Type": "application/json" },
+      body: body ? JSON.stringify(body) : undefined,
+      cache: "no-store",
+    });
+    if (legacyRes.ok || legacyRes.status !== 404) {
+      res = legacyRes;
+    }
+  }
+
   if (!res.ok) throw new Error(`auth service ${path}: HTTP ${res.status}`);
   return (await res.json()) as T;
 }
@@ -63,12 +79,20 @@ export const getSession = cache(async (): Promise<Viewer | null> => {
 // Whether to show "Continue with Google". Cached and time-boxed so a sleeping auth server can't
 // stall the login page; on any failure the button is just hidden.
 export async function googleEnabled(): Promise<boolean> {
+  const base = AUTH_API.replace(/\/+$/, "");
   try {
-    const res = await fetch(`${AUTH_API}/config`, {
+    let res = await fetch(`${base}/api/v1/auth/config`, {
       headers: { Authorization: `Bearer ${process.env.AUTH_SERVICE_SECRET}` },
       next: { revalidate: 300 },
       signal: AbortSignal.timeout(2000),
     });
+    if (res.status === 404) {
+      res = await fetch(`${base}/api/auth/config`, {
+        headers: { Authorization: `Bearer ${process.env.AUTH_SERVICE_SECRET}` },
+        next: { revalidate: 300 },
+        signal: AbortSignal.timeout(2000),
+      });
+    }
     return res.ok && ((await res.json()) as { google?: boolean }).google === true;
   } catch {
     return false;

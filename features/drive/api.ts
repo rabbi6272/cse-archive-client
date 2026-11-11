@@ -29,11 +29,20 @@ const getDriveApiUrl = () =>
 
 // The Drive API runs on the separate server in cse-archive-server/ (see docs/drive-cache-system.md).
 export async function fetchDriveFolder(folderId: string): Promise<DriveFolderData> {
-  const response = await fetch(`${getDriveApiUrl()}/api/drive`, {
+  const base = getDriveApiUrl();
+  let response = await fetch(`${base}/api/v1/drive`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ folderId }),
   });
+
+  if (response.status === 404) {
+    response = await fetch(`${base}/api/drive`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ folderId }),
+    });
+  }
 
   const data = (await response.json().catch(() => ({}))) as Partial<DriveFolderData> & {
     error?: string;

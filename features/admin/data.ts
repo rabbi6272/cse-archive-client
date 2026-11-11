@@ -17,12 +17,23 @@ export type DriveStatus = {
 type DriveResponse = { ok?: boolean; action?: DriveAction; details?: Record<string, unknown>; status?: DriveStatus; error?: string };
 
 async function driveAdmin<T>(method: "GET" | "POST", body?: Record<string, unknown>): Promise<T> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_DRIVE_API_URL}/api/drive/admin`, {
+  const base = process.env.NEXT_PUBLIC_DRIVE_API_URL?.replace(/\/+$/, "");
+  let res = await fetch(`${base}/api/v1/drive/admin`, {
     method,
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.ADMIN_SECRET}` },
     body: body ? JSON.stringify(body) : undefined,
     cache: "no-store",
   });
+
+  if (res.status === 404) {
+    res = await fetch(`${base}/api/drive/admin`, {
+      method,
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.ADMIN_SECRET}` },
+      body: body ? JSON.stringify(body) : undefined,
+      cache: "no-store",
+    });
+  }
+
   const data = (await res.json().catch(() => ({}))) as T & { error?: string };
   if (!res.ok) throw new Error(data.error || `Drive server: HTTP ${res.status}`);
   return data;
