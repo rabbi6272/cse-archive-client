@@ -1,12 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import FirebaseAuthService from "@/lib/firebase-auth-service";
 import AuthUtils from "@/lib/auth-utils-secure";
+import { logoutAction } from "@/features/auth/actions";
 import toast from "react-hot-toast";
 
-const LogoutButton = ({
+export interface LogoutButtonProps {
+  className?: string;
+  variant?: "danger" | "outline" | "ghost" | "minimal" | "default";
+  showIcon?: boolean;
+  children?: ReactNode;
+}
+
+const LogoutButton: React.FC<LogoutButtonProps> = ({
   className = "",
   variant = "default",
   showIcon = true,
@@ -16,13 +24,14 @@ const LogoutButton = ({
 
   const handleLogout = async () => {
     try {
-      await FirebaseAuthService.signOut();
+      await logoutAction(); // clears the HttpOnly __session on the server
+      await FirebaseAuthService.signOut(); // anonymous data-access auth (RTDB), not user login
       const success = AuthUtils.logout();
 
       if (success) {
         toast.success("Logged out successfully!");
-        // Redirect to login page
         router.push("/user/login");
+        router.refresh();
       } else {
         toast.error("Error during logout");
       }
@@ -32,7 +41,7 @@ const LogoutButton = ({
     }
   };
 
-  const getVariantClasses = () => {
+  const getVariantClasses = (): string => {
     switch (variant) {
       case "danger":
         return "bg-red-500 hover:bg-red-600 text-white border-red-500 hover:border-red-600";

@@ -4,33 +4,37 @@ import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Button, cn, focusRing, Skeleton } from "@/components/ui";
 import { logout } from "@/features/admin/actions";
+
 import { AdminShell } from "@/features/admin/AdminShell";
 import { AdminLoginForm } from "@/features/admin/LoginForm";
 import { AlumniPanel, DrivePanel, SessionsPanel } from "@/features/admin/panels";
-import { isAdmin } from "@/features/admin/session";
+import { getSession } from "@/features/auth/server";
+import { hasRole, type Role } from "@/features/auth/roles";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false, follow: false } };
 
-const TABS = [
-  { id: "drive", label: "Drive cache", description: "Webhook watch, cache invalidation and Drive metadata." },
-  { id: "alumni", label: "Alumni", description: "Add alumni to the Global RUET map." },
-  { id: "sessions", label: "Sessions", description: "Every user session and its latest activity." },
-] as const;
-type TabId = (typeof TABS)[number]["id"];
+const ALL_TABS = [
+  { id: "drive", label: "Drive cache", description: "Webhook watch, cache invalidation and Drive metadata.", min: "super_admin" },
+  { id: "alumni", label: "Alumni", description: "Add alumni to the Global RUET map.", min: "admin" },
+  { id: "sessions", label: "Sessions", description: "Every user session and its latest activity.", min: "admin" },
+] as const satisfies ReadonlyArray<{ id: string; label: string; description: string; min: Role }>;
+type TabId = (typeof ALL_TABS)[number]["id"];
 
-// The single admin page. The session is checked on the server before anything renders, and every
-// admin action re-checks it (features/admin/actions.ts), so nothing here relies on the browser.
+// The single admin page. The account's role is checked on the server before anything renders, and
+// every admin action re-checks it (features/admin/actions.ts), so nothing here relies on the browser.
 export default async function AdminPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
-  if (!(await isAdmin())) {
+  const viewer = await getSession();
+  if (!hasRole(viewer, "admin")) {
     return (
       <AdminShell title="Admin" narrow>
-        <AdminLoginForm />
+        <AdminLoginForm signedIn={viewer !== null} />
       </AdminShell>
     );
   }
 
+  const TABS = ALL_TABS.filter((t) => hasRole(viewer, t.min));
   const requested = (await searchParams).tab;
-  const tab = TABS.find((t) => t.id === requested) ?? TABS[0];
+  const tab = TABS.find((t) => t.id === requested) ?? TABS[0]!;
   const Panel = { drive: DrivePanel, alumni: AlumniPanel, sessions: SessionsPanel }[tab.id as TabId];
 
   return (

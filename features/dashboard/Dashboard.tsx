@@ -180,7 +180,6 @@ export function Dashboard() {
               variant="ghost"
               size="sm"
               onClick={async () => {
-                // Clear the server session cookie, then the display copy other features read.
                 await logoutAction();
                 AuthUtils.logout();
                 router.push("/");

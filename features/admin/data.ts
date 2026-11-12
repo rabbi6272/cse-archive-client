@@ -1,4 +1,5 @@
 import "server-only";
+import { SERVER_URL } from "@/lib/server-url";
 
 // Server-side access for the admin page. Nothing here runs in the browser, so ADMIN_SECRET and any
 // database credential stay on the server.
@@ -17,7 +18,7 @@ export type DriveStatus = {
 type DriveResponse = { ok?: boolean; action?: DriveAction; details?: Record<string, unknown>; status?: DriveStatus; error?: string };
 
 async function driveAdmin<T>(method: "GET" | "POST", body?: Record<string, unknown>): Promise<T> {
-  const base = process.env.NEXT_PUBLIC_DRIVE_API_URL?.replace(/\/+$/, "");
+  const base = SERVER_URL;
   let res = await fetch(`${base}/api/v1/drive/admin`, {
     method,
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.ADMIN_SECRET}` },

@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       redirectUri: callbackUri(request.url),
     });
     if (!result.ok) {
-      const known = ["claim", "no-profile", "no-account"];
+      const known = ["claim", "no-profile", "no-account", "unavailable"];
       return done(`/user/login?authError=${known.includes(result.code) ? result.code : "google"}`);
     }
     return done(`/user/login?google=1&next=${encodeURIComponent(safeNext(saved.next))}`, result.session);

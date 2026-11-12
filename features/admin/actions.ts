@@ -4,30 +4,20 @@ import { revalidatePath } from "next/cache";
 import { alumniData, badgeLabels } from "@/features/alumni/data";
 import { validateAlumnus, type AlumnusInput } from "./alumni";
 import { getDbAlumni, pushAlumnus, runDriveAction, type DriveAction } from "./data";
-import { checkPassword, endSession, requireAdmin, startSession } from "./session";
+import { logoutAction } from "@/features/auth/actions";
+import { requireAdmin } from "./session";
 
 export type ActionState = { ok?: boolean; message?: string } | null;
 
-export async function login(_: ActionState, form: FormData): Promise<ActionState> {
-  if (!checkPassword(String(form.get("password") ?? ""))) {
-    // Slow down guessing; real rate limiting would need shared state across server instances.
-    await new Promise((r) => setTimeout(r, 1000));
-    return { ok: false, message: "Incorrect password." };
-  }
-  await startSession();
-  revalidatePath("/admin");
-  return { ok: true };
-}
-
 export async function logout() {
-  await endSession();
+  await logoutAction();
   revalidatePath("/admin");
 }
 
 const DRIVE_ACTIONS: DriveAction[] = ["setup", "revalidate", "delete", "renew", "status"];
 
 export async function driveAction(_: ActionState, form: FormData): Promise<ActionState> {
-  await requireAdmin();
+  await requireAdmin("super_admin");
   const action = String(form.get("action")) as DriveAction;
   if (!DRIVE_ACTIONS.includes(action)) return { ok: false, message: "Unknown action." };
   try {
@@ -43,7 +33,7 @@ export async function driveAction(_: ActionState, form: FormData): Promise<Actio
 }
 
 export async function addAlumnus(_: ActionState, form: FormData): Promise<ActionState> {
-  await requireAdmin();
+  const admin = await requireAdmin("admin");
   const str = (k: string) => String(form.get(k) ?? "").trim();
   const input: AlumnusInput = {
     name: str("name"),
@@ -74,8 +64,8 @@ export async function addAlumnus(_: ActionState, form: FormData): Promise<Action
       Id: id,
       coordinates: [Number(longitude), Number(latitude)],
       type: "Point",
-      addedBy: "admin",
-      addedByName: "Admin",
+      addedBy: admin.uid,
+      addedByName: admin.name || admin.email,
       dateAdded: new Date().toISOString(),
     });
     revalidatePath("/admin");

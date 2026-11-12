@@ -1,13 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { SESSION_COOKIE, verifySession } from "@/features/admin/session";
 
-// Guards every /admin/* path with the ADMIN_SECRET session (see features/admin/session.ts), so admin
-// pages added later are protected without extra code. /admin itself stays open: it's the login form,
-// and it checks the session itself before rendering any admin content. Admin Server Actions also
-// re-check with requireAdmin().
+// Cheap first gate for /admin/* sub-pages: no __session cookie means not signed in, so send the
+// visitor to the login page. The real role check (admin / super_admin) happens on the server in
+// each admin page and Server Action via features/admin/session.ts.
 export function proxy(request: NextRequest) {
-  if (verifySession(request.cookies.get(SESSION_COOKIE)?.value)) return NextResponse.next();
-  return NextResponse.redirect(new URL("/admin", request.url));
+  if (request.cookies.get("__session")?.value) return NextResponse.next();
+  const login = new URL("/user/login", request.url);
+  login.searchParams.set("next", request.nextUrl.pathname);
+  return NextResponse.redirect(login);
 }
 
 export const config = { matcher: ["/admin/:path+"] };
