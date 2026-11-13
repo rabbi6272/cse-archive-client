@@ -25,18 +25,20 @@ export const isFolder = (file: DriveFile) => file.mimeType.includes("folder");
 const getDriveApiUrl = () => SERVER_URL;
 
 // The Drive API runs on the separate server in cse-archive-server/ (see docs/drive-cache-system.md).
+// The body is sent as text/plain so the request stays a CORS "simple request": the browser then
+// skips the OPTIONS preflight round trip. The server parses the body as JSON regardless.
 export async function fetchDriveFolder(folderId: string): Promise<DriveFolderData> {
   const base = getDriveApiUrl();
   let response = await fetch(`${base}/api/v1/drive`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
     body: JSON.stringify({ folderId }),
   });
 
   if (response.status === 404) {
     response = await fetch(`${base}/api/drive`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
       body: JSON.stringify({ folderId }),
     });
   }
