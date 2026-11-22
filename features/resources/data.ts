@@ -30,7 +30,9 @@ export const resources: Resource[] = [
     description:
       "You've compiled your basics. Now get ready for bugs that don't show errors! Dive into 'why won't this code run?!' energy.",
     image: image1,
-    links: [{ label: "2 - 1", href: "/drive/1zxDdCdFiquVKO86oOLXKxMsSCJalHld_" }, { label: "2 - 2" }],
+    links: [
+{ label: "2 - 1", href: "/drive/1zxDdCdFiquVKO86oOLXKxMsSCJalHld_" }, 
+{ label: "2 - 2", href: "/drive/1NnkqIexjwV4bHbPM20v9LJrc1Hh-TTrN"}],
   },
   {
     title: "3rd Year Resources",
